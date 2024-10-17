@@ -1,13 +1,14 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: 5
+  pool: 10
   timeout: 5000
+  prepared_statements: false
 
 development:
   <<: *default
-  database: geo_data_development
+  url: postgresql://postgres.aaudfysknshptqfrxuyw:vasanth1234geodata@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
 
 production:
   <<: *default
-  database: geo_data_production
+  url: postgresql://postgres.aaudfysknshptqfrxuyw:vasanth1234geodata@aws-0-ap-south-1.pooler.supabase.com:6543/postgres

@@ -17,6 +17,10 @@ gem 'devise'
 # JWT integration for Devise
 gem 'devise-jwt'
 
+gem 'pry'
+
+gem 'activerecord-postgis-adapter'
+
 # postgresql database for Active Record
 gem 'pg', '~>1.5.8'
 

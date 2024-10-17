@@ -59,6 +59,9 @@ GEM
       activemodel (= 7.1.4.1)
       activesupport (= 7.1.4.1)
       timeout (>= 0.4.0)
+    activerecord-postgis-adapter (9.0.2)
+      activerecord (~> 7.1.0)
+      rgeo-activerecord (~> 7.0.0)
     activestorage (7.1.4.1)
       actionpack (= 7.1.4.1)
       activejob (= 7.1.4.1)
@@ -81,6 +84,7 @@ GEM
     bootsnap (1.18.4)
       msgpack (~> 1.2)
     builder (3.3.0)
+    coderay (1.1.3)
     concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -128,6 +132,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
+    method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.25.1)
     msgpack (1.7.3)
@@ -150,6 +155,9 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.5.8)
+    pry (0.14.2)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     psych (5.1.2)
       stringio
     puma (6.4.3)
@@ -202,6 +210,10 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
+    rgeo (3.0.1)
+    rgeo-activerecord (7.0.1)
+      activerecord (>= 5.0)
+      rgeo (>= 1.0.0)
     stringio (3.1.1)
     thor (1.3.2)
     timeout (0.4.1)
@@ -226,12 +238,14 @@ PLATFORMS
   x86_64-darwin
 
 DEPENDENCIES
+  activerecord-postgis-adapter
   bootsnap
   debug
   devise
   devise-jwt
   error_highlight (>= 0.4.0)
   pg (~> 1.5.8)
+  pry
   puma (>= 5.0)
   rack-cors
   rails (~> 7.1.4)
