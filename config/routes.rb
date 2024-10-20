@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     post '/login', to: 'users/sessions#create'
     post '/register', to: 'users/registrations#create'
-    delete '/logout', to: 'users/sessions#destroy'
+    post '/logout', to: 'users/sessions#logout'
   end
 
   resources :geospatial_data

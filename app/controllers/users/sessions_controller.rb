@@ -11,6 +11,23 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
+  def logout
+    token = request.headers['Authorization'].split(' ').last if request.headers['Authorization'].present?
+    if token
+      decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base).first
+      jti = decoded_token
+      user = User.find(jti["id"])
+      JwtDenylist.create(jti: jti)
+      if user.present?
+        render json: { message: 'Logged out successfully' }, status: :ok
+      else
+        render json: { message: 'Already Logged out!' }, status: :unauthorized
+      end
+    end
+  rescue JWT::DecodeError
+    render json: { error: 'Invalid token' }, status: :unauthorized
+  end
+
   private
 
   def respond_with(resource, _opts = {})
