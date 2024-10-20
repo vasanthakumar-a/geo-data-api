@@ -6,7 +6,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     if resource.save
       yield resource if block_given?
-      render json: { message: 'User registered successfully', user: resource }, status: :created
+      token = resource.generate_jwt
+
+      render json: { message: 'User registered successfully', user: resource, token: token }, status: :created
     else
       render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
     end

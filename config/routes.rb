@@ -11,4 +11,7 @@ Rails.application.routes.draw do
     post '/register', to: 'users/registrations#create'
     delete '/logout', to: 'users/sessions#destroy'
   end
+
+  resources :geospatial_data
+  resources :shapes
 end

@@ -5,7 +5,7 @@ class Users::SessionsController < Devise::SessionsController
     user = User.find_for_database_authentication(email: params[:user][:email])
     if user&.valid_password?(params[:user][:password])
       token = current_user.generate_jwt
-      render json: { message: 'Login successful', vas: "vas", token: token, user: user }, status: :ok
+      render json: { message: 'Login successful', token: token, user: user }, status: :ok
     else
       render json: { errors: ['Invalid email or password'] }, status: :unauthorized
     end

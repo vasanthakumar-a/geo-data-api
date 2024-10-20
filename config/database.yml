@@ -1,14 +1,20 @@
 default: &default
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
+  database: postgres
   pool: 10
   timeout: 5000
-  prepared_statements: false
 
 development:
   <<: *default
-  url: postgresql://postgres.aaudfysknshptqfrxuyw:vasanth1234geodata@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+  username: postgres.aaudfysknshptqfrxuyw
+  password: vasanth1234geodata
+  host: aws-0-ap-south-1.pooler.supabase.com
+  port: 6543
 
 production:
   <<: *default
-  url: postgresql://postgres.aaudfysknshptqfrxuyw:vasanth1234geodata@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+  username: postgres.aaudfysknshptqfrxuyw
+  password: vasanth1234geodata
+  host: aws-0-ap-south-1.pooler.supabase.com
+  port: 6543
