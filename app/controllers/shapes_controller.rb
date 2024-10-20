@@ -1,9 +1,10 @@
 class ShapesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_shape, only: [:show, :update, :destroy]
 
   # GET /shapes
   def index
-    @shapes = Shape.all
+    @shapes = current_user.shapes
     render json: @shapes
   end
 
@@ -14,7 +15,7 @@ class ShapesController < ApplicationController
 
   # POST /shapes
   def create
-    @shape = Shape.new(shape_params)
+    @shape = Shape.new(build_shape_params)
     if @shape.save
       render json: @shape, status: :created
     else
@@ -24,7 +25,7 @@ class ShapesController < ApplicationController
 
   # PATCH/PUT /shapes/:id
   def update
-    if @shape.update(shape_params)
+    if @shape.update(build_shape_params)
       render json: @shape
     else
       render json: @shape.errors, status: :unprocessable_entity
@@ -40,7 +41,19 @@ class ShapesController < ApplicationController
   private
 
   def set_shape
-    @shape = Shape.find(params[:id])
+    @shape = current_user.shapes.find_by(id: params[:id])
+  end
+
+  def build_shape_params
+    geojson_data = params[:shape][:geometry]
+    factory = RGeo::Geographic.spherical_factory(srid: 4326)
+    rgeo_geometry = factory.parse_geojson(geojson_data.to_json)
+    {
+      user_id: current_user.id,
+      name: params[:shape][:name],
+      geometry: rgeo_geometry,
+      custom_options: params[:shape][:custom_options] || {}
+    }
   end
 
   def shape_params

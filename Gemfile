@@ -20,6 +20,8 @@ gem 'devise-jwt'
 gem 'pry'
 
 gem 'activerecord-postgis-adapter'
+gem 'rgeo'
+gem 'rgeo-geojson'
 
 # postgresql database for Active Record
 gem 'pg', '~>1.5.8'
