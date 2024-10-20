@@ -4,7 +4,7 @@ class ShapesController < ApplicationController
 
   # GET /shapes
   def index
-    @shapes = current_user.shapes
+    @shapes = current_user.shapes.order("updated_at DESC")
     render json: @shapes
   end
 
