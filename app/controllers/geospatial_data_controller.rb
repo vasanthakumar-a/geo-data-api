@@ -3,6 +3,7 @@ class GeospatialDataController < ApplicationController
 
   def create
     @geospatial_data = current_user.geospatial_data.new(geospatial_data_params)
+    @geospatial_data.build_shape({user_id: current_user.id, name: 'file name', geometry: '', custom_options: {}})
     if @geospatial_data.save
       render json: { success: true, data: @geospatial_data }, status: :created
     else
@@ -21,6 +22,6 @@ class GeospatialDataController < ApplicationController
   end
 
   def geospatial_data_params
-    params.require(:geospatial_data).permit(:name, :file_type, :geometry)
+    params.require(:geospatial_data).permit(:name, :file_type)
   end
 end

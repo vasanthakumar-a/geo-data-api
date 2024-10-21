@@ -15,7 +15,7 @@ class ShapesController < ApplicationController
 
   # POST /shapes
   def create
-    @shape = Shape.new(build_shape_params)
+    @shape = current_user.shapes.new(build_shape_params)
     if @shape.save
       render json: @shape, status: :created
     else
@@ -49,7 +49,6 @@ class ShapesController < ApplicationController
     factory = RGeo::Geographic.spherical_factory(srid: 4326)
     rgeo_geometry = factory.parse_geojson(geojson_data.to_json)
     {
-      user_id: current_user.id,
       name: params[:shape][:name],
       geometry: rgeo_geometry,
       custom_options: params[:shape][:custom_options] || {}
