@@ -1,5 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
+  before_action :clear_cache_act, only: [:create]
 
   def create
     user = User.find_for_database_authentication(email: params[:user][:email])
@@ -32,6 +33,11 @@ class Users::SessionsController < Devise::SessionsController
 
   def respond_with(resource, _opts = {})
     render json: { message: 'Logged in successfully.', user: resource }, status: :ok
+  end
+
+  def clear_cache_act
+    ActiveRecord::Base.connection.clear_cache!
+    ActiveRecord::Base.connection.execute("DEALLOCATE ALL")
   end
 
   def respond_to_on_destroy

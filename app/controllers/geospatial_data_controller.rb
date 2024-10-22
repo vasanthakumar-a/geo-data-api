@@ -29,17 +29,29 @@ class GeospatialDataController < ApplicationController
 
   def build_shape_params
     file = params[:file]
+    file_content = File.read(file.tempfile)
     file_name = File.basename(file.original_filename, File.extname(file.original_filename))
     file_extension = File.extname(file.original_filename).delete('.').downcase
+    shape_geometry = ''
 
-    geojson_data = JSON.parse(file.read)
-    geo_factory = RGeo::Geographic.spherical_factory(srid: 4326)
-    rgeo_geometry = geo_factory.parse_geojson(geojson_data)
+    if(file_extension == "json")
+      geojson_data = JSON.parse(file_content)
+      geo_factory = RGeo::Geographic.spherical_factory(srid: 4326)
+      shape_geometry = geo_factory.parse_geojson(geojson_data)
+    elsif(file_extension == "kml")
+      wkt_polygon = Shape.kml_to_wkt(file_content)
+      shape_geometry = wkt_polygon
+    else
+      shape_geometry = ''
+    end
+
+    factory = RGeo::Geographic.spherical_factory(srid: 4326)
+    wkt_geometry = factory.parse_wkt(shape_geometry)
 
     {
       user_id: current_user.id,
       name: "#{file_name} - #{file_extension.downcase} Type",
-      geometry: rgeo_geometry,
+      geometry: wkt_geometry,
       custom_options: {}
     }
   end

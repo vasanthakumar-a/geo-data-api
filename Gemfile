@@ -22,6 +22,7 @@ gem 'pry'
 gem 'activerecord-postgis-adapter'
 gem 'rgeo'
 gem 'rgeo-geojson'
+gem 'nokogiri'
 
 # postgresql database for Active Record
 gem 'pg', '~>1.5.8'
