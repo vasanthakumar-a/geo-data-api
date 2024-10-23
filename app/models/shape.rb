@@ -1,6 +1,6 @@
 class Shape < ApplicationRecord
   belongs_to :user
-  has_one :geospatial_datum
+  has_one :geospatial_datum, dependent: :destroy
   validates :geometry, presence: true
 
   before_save :ensure_unique_name

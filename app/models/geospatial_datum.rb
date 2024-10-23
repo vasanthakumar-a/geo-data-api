@@ -1,6 +1,6 @@
 class GeospatialDatum < ApplicationRecord
   belongs_to :user
-  has_one_attached :file
+  has_one_attached :file, dependent: :destroy
   belongs_to :shape
   validates :name, presence: true
 
