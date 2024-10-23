@@ -3,6 +3,8 @@ class Shape < ApplicationRecord
   has_one :geospatial_datum
   validates :geometry, presence: true
 
+  before_save :ensure_unique_name
+
   def self.kml_to_wkt(kml_data)
     doc = Nokogiri::XML(kml_data)
     kml_ns = { "kml" => "http://www.opengis.net/kml/2.2" }
@@ -34,6 +36,16 @@ class Shape < ApplicationRecord
     coordinates.map do |coord|
       lon, lat, _altitude = coord.split(',')
       "(#{lon} #{lat})"
+    end
+  end
+
+  private
+  def ensure_unique_name
+    base_name = self.name
+    counter = 1
+    while Shape.exists?(name: self.name)
+      self.name = "#{base_name}_#{counter}"
+      counter += 1
     end
   end
 end

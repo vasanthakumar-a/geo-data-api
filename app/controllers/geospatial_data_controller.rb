@@ -32,21 +32,19 @@ class GeospatialDataController < ApplicationController
     file_content = File.read(file.tempfile)
     file_name = File.basename(file.original_filename, File.extname(file.original_filename))
     file_extension = File.extname(file.original_filename).delete('.').downcase
-    shape_geometry = ''
+    wkt_geometry = ''
+    factory = RGeo::Geographic.spherical_factory(srid: 4326)
 
     if(file_extension == "json")
       geojson_data = JSON.parse(file_content)
-      geo_factory = RGeo::Geographic.spherical_factory(srid: 4326)
-      shape_geometry = geo_factory.parse_geojson(geojson_data)
+      wkt_geometry = factory.parse_geojson(geojson_data)
     elsif(file_extension == "kml")
       wkt_polygon = Shape.kml_to_wkt(file_content)
-      shape_geometry = wkt_polygon
+      kml_geometry = wkt_polygon
+      wkt_geometry = factory.parse_wkt(kml_geometry)
     else
-      shape_geometry = ''
+      wkt_geometry = ''
     end
-
-    factory = RGeo::Geographic.spherical_factory(srid: 4326)
-    wkt_geometry = factory.parse_wkt(shape_geometry)
 
     {
       user_id: current_user.id,
