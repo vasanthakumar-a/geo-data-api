@@ -15,7 +15,7 @@ class Users::SessionsController < Devise::SessionsController
   def logout
     token = request.headers['Authorization'].split(' ').last if request.headers['Authorization'].present?
     if token
-      decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base).first
+      decoded_token = JWT.decode(token, Rails.env.production? ? ENV['SECRET_KEY_BASE'] : Rails.application.credentials.secret_key_base).first
       jti = decoded_token
       user = User.find(jti["id"])
       JwtDenylist.create(jti: jti)
@@ -43,7 +43,7 @@ class Users::SessionsController < Devise::SessionsController
   def respond_to_on_destroy
     token = request.headers['Authorization'].split(' ').last if request.headers['Authorization'].present?
     if token
-      decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base).first
+      decoded_token = JWT.decode(token,Rails.env.production? ? ENV['SECRET_KEY_BASE'] : Rails.application.credentials.secret_key_base).first
       jti = decoded_token
       user = User.find(jti["id"])
       JwtDenylist.create(jti: jti)
